@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotwireTurbo.Demo.BlazorServer", "HotwireTurbo.Demo.BlazorServer\HotwireTurbo.Demo.BlazorServer.csproj", "{6D265DD6-CA09-4529-B5A1-798E685AB0F9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{5E81AE3B-83EC-48C9-BFFC-844D5C9948EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,9 +25,16 @@ Global
 		{8A2DE157-0FC0-4041-8561-E9BAB7BEE647}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A2DE157-0FC0-4041-8561-E9BAB7BEE647}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A2DE157-0FC0-4041-8561-E9BAB7BEE647}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D265DD6-CA09-4529-B5A1-798E685AB0F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D265DD6-CA09-4529-B5A1-798E685AB0F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D265DD6-CA09-4529-B5A1-798E685AB0F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D265DD6-CA09-4529-B5A1-798E685AB0F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6D265DD6-CA09-4529-B5A1-798E685AB0F9} = {5E81AE3B-83EC-48C9-BFFC-844D5C9948EE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {48887848-EEDF-4CAA-AC91-A8D8EFFA9037}

@@ -1,32 +1,21 @@
-﻿using System.ComponentModel;
-using System.Threading.Tasks;
-using HotwireTurbo.NET.Interfaces;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace HotwireTurbo.NET.TagHelpers;
 
-public class TurboFrameTagHelper : TagHelper
+public class TurboFrameTagHelper : TurboTagHelper
 {
     public object Id { get; set; }
     public string Target { get; set; }
     public string Src { get; set; }
 
+    /// <inheritdoc />
     public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
     {
-        var id = convertToDomId(Id);
+        var id = ConvertToDomId(Id);
         output.Attributes.SetAttribute("id", id);
         if (!string.IsNullOrEmpty(Target)) output.Attributes.SetAttribute("target", Target);
         if (!string.IsNullOrEmpty(Src)) output.Attributes.SetAttribute("src", Src);
         output.Content.SetHtmlContent((await output.GetChildContentAsync()).GetContent());
-    }
-
-    private string convertToDomId(object target)
-    {
-        return target switch
-        {
-            IHasDomId hasDomId => hasDomId.ToDomId(),
-            string @string => @string,
-            _ => throw new InvalidEnumArgumentException("target must be of type IHasDomId or string")
-        };
     }
 }

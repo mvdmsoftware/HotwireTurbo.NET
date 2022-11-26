@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace HotwireTurbo;
+namespace HotwireTurbo.NET;
 
 public class TurboStreamResult : ActionResult, IStatusCodeActionResult
 {

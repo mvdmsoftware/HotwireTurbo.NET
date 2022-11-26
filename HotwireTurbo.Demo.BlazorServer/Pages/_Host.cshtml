@@ -1,0 +1,36 @@
+﻿@page "/"
+
+@using Microsoft.AspNetCore.Components.Web
+
+@namespace HotwireTurbo.Demo.BlazorServer.Pages
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, HotwireTurbo.NET.TagHelpers
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>HotwireTurbo.NET Demo for Blazor Server</title>
+    <meta charset="utf-8" />
+    <base href="~/" />
+    <link href="css/site.css" rel="stylesheet" />
+    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+    
+    <script src="js/index.bundle.js"></script>
+</head>
+<body>
+    <component type="typeof(App)" render-mode="ServerPrerendered" />
+
+    <div id="blazor-error-ui">
+        <environment include="Staging,Production">
+            An error has occurred. This application may no longer respond until reloaded.
+        </environment>
+        <environment include="Development">
+            An unhandled exception has occurred. See browser dev tools for details.
+        </environment>
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+</body>
+</html>

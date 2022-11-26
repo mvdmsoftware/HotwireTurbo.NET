@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -12,16 +11,13 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace HotwireTurbo;
+namespace HotwireTurbo.NET;
 
 /// <summary>
 /// Finds and executes an <see cref="IView"/> for a <see cref="TurboStreamResult"/>.
 /// </summary>
 public class TurboStreamResultExecutor : ViewExecutor, IActionResultExecutor<TurboStreamResult>
 {
-    private IHttpResponseStreamWriterFactory writerFactory;
-    private const string ActionNameKey = "action";
-
     /// <summary>
     /// Creates a new <see cref="PartialViewResultExecutor"/>.
     /// </summary>
@@ -48,7 +44,6 @@ public class TurboStreamResultExecutor : ViewExecutor, IActionResultExecutor<Tur
         }
 
         Logger = loggerFactory.CreateLogger<TurboStreamResultExecutor>();
-        this.writerFactory = writerFactory;
     }
 
     /// <summary>
@@ -74,10 +69,8 @@ public class TurboStreamResultExecutor : ViewExecutor, IActionResultExecutor<Tur
             throw new ArgumentNullException(nameof(viewResult));
         }
 
-        var viewEngine = viewResult.ViewEngine ?? ViewEngine;
-        var viewName = viewResult.ViewName ?? GetActionName(actionContext);
-
-        // var stopwatch = ValueStopwatch.StartNew();
+        var viewEngine = viewResult.ViewEngine;
+        var viewName = viewResult.ViewName;
 
         var result = viewEngine.GetView(executingFilePath: null, viewPath: viewName, isMainPage: false);
         var originalResult = result;
@@ -86,48 +79,24 @@ public class TurboStreamResultExecutor : ViewExecutor, IActionResultExecutor<Tur
             result = viewEngine.FindView(actionContext, viewName, isMainPage: false);
         }
 
-        // Logger.PartialViewResultExecuting(result.ViewName);
-        if (!result.Success)
-        {
-            if (originalResult.SearchedLocations.Any())
-            {
-                if (result.SearchedLocations.Any())
-                {
-                    // Return a new ViewEngineResult listing all searched locations.
-                    var locations = new List<string>(originalResult.SearchedLocations);
-                    locations.AddRange(result.SearchedLocations);
-                    result = ViewEngineResult.NotFound(viewName, locations);
-                }
-                else
-                {
-                    // GetView() searched locations but FindView() did not. Use first ViewEngineResult.
-                    result = originalResult;
-                }
-            }
-        }
+        if (result.Success)
+            return result;
 
-        // if (result.Success)
-        // {
-        //     DiagnosticListener.ViewFound(
-        //         actionContext,
-        //         isMainPage: false,
-        //         viewResult: viewResult,
-        //         viewName: viewName,
-        //         view: result.View);
-        //
-        //     Logger.PartialViewFound(result.View, stopwatch.GetElapsedTime());
-        // }
-        // else
-        // {
-        //     DiagnosticListener.ViewNotFound(
-        //         actionContext,
-        //         isMainPage: false,
-        //         viewResult: viewResult,
-        //         viewName: viewName,
-        //         searchedLocations: result.SearchedLocations);
-        //
-        //     Logger.PartialViewNotFound(viewName, result.SearchedLocations);
-        // }
+        if (!originalResult.SearchedLocations.Any())
+            return result;
+
+        if (result.SearchedLocations.Any())
+        {
+            // Return a new ViewEngineResult listing all searched locations.
+            var locations = new List<string>(originalResult.SearchedLocations);
+            locations.AddRange(result.SearchedLocations);
+            result = ViewEngineResult.NotFound(viewName, locations);
+        }
+        else
+        {
+            // GetView() searched locations but FindView() did not. Use first ViewEngineResult.
+            result = originalResult;
+        }
 
         return result;
     }
@@ -157,14 +126,16 @@ public class TurboStreamResultExecutor : ViewExecutor, IActionResultExecutor<Tur
         }
 
         var preContent = viewResult.Action == "remove"
-            ? @$"<turbo-stream action=""{viewResult.Action}"">"
-            : @$"<turbo-stream action=""{viewResult.Action}"" target=""{viewResult.Target}""><template>";
+            ? $"""<turbo-stream action="{viewResult.Action}">"""
+            : $"""<turbo-stream action="{viewResult.Action}" target="{viewResult.Target}"><template>""";
+
         var postContent = viewResult.Action == "remove"
             ? "</turbo-stream>"
             : "</template></turbo-stream>";
+
         await ExecuteAsync(
             actionContext,
-            new WrapperView(view, preContent, postContent),
+            new WrappedView(view, preContent, postContent),
             viewResult.ViewData,
             viewResult.TempData,
             "text/vnd.turbo-stream.html",
@@ -175,55 +146,14 @@ public class TurboStreamResultExecutor : ViewExecutor, IActionResultExecutor<Tur
     public virtual async Task ExecuteAsync(ActionContext context, TurboStreamResult result)
     {
         if (context == null)
-        {
             throw new ArgumentNullException(nameof(context));
-        }
 
         if (result == null)
-        {
             throw new ArgumentNullException(nameof(result));
-        }
-
-        // var stopwatch = ValueStopwatch.StartNew();
 
         var viewEngineResult = FindView(context, result);
         viewEngineResult.EnsureSuccessful(originalLocations: null);
 
-        var view = viewEngineResult.View;
-        using (view as IDisposable)
-        {
-            await ExecuteAsync(context, view, result);
-        }
-
-        // Logger.PartialViewResultExecuted(result.ViewName, stopwatch.GetElapsedTime());
-    }
-
-    private static string GetActionName(ActionContext context)
-    {
-        if (context == null)
-        {
-            throw new ArgumentNullException(nameof(context));
-        }
-
-        if (!context.RouteData.Values.TryGetValue(ActionNameKey, out var routeValue))
-        {
-            return null;
-        }
-
-        var actionDescriptor = context.ActionDescriptor;
-        string normalizedValue = null;
-        if (actionDescriptor.RouteValues.TryGetValue(ActionNameKey, out var value) &&
-            !string.IsNullOrEmpty(value))
-        {
-            normalizedValue = value;
-        }
-
-        var stringRouteValue = Convert.ToString(routeValue, CultureInfo.InvariantCulture);
-        if (string.Equals(normalizedValue, stringRouteValue, StringComparison.OrdinalIgnoreCase))
-        {
-            return normalizedValue;
-        }
-
-        return stringRouteValue;
+        await ExecuteAsync(context, viewEngineResult.View, result);
     }
 }
