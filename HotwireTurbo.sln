@@ -11,9 +11,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotwireTurbo.Demo.BlazorServer", "HotwireTurbo.Demo.BlazorServer\HotwireTurbo.Demo.BlazorServer.csproj", "{6D265DD6-CA09-4529-B5A1-798E685AB0F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotwireTurbo.Demo.BlazorServer", "HotwireTurbo.Demo.BlazorServer\HotwireTurbo.Demo.BlazorServer.csproj", "{6D265DD6-CA09-4529-B5A1-798E685AB0F9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Demos", "Demos", "{5E81AE3B-83EC-48C9-BFFC-844D5C9948EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotwireTurbo.Demo.AspNetCore", "HotwireTurbo.Demo.AspNetCore\HotwireTurbo.Demo.AspNetCore.csproj", "{898C29C6-5028-4886-B763-96EE18305F55}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3959EDA4-5F7C-42E1-B84B-A2740E20C221}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HotwireTurbo.NET.Tests", "HotwireTurbo.NET.Tests\HotwireTurbo.NET.Tests.csproj", "{19459372-93F4-4437-AC22-AF031D529098}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,12 +35,22 @@ Global
 		{6D265DD6-CA09-4529-B5A1-798E685AB0F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D265DD6-CA09-4529-B5A1-798E685AB0F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D265DD6-CA09-4529-B5A1-798E685AB0F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{898C29C6-5028-4886-B763-96EE18305F55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{898C29C6-5028-4886-B763-96EE18305F55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{898C29C6-5028-4886-B763-96EE18305F55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{898C29C6-5028-4886-B763-96EE18305F55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19459372-93F4-4437-AC22-AF031D529098}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19459372-93F4-4437-AC22-AF031D529098}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19459372-93F4-4437-AC22-AF031D529098}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19459372-93F4-4437-AC22-AF031D529098}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6D265DD6-CA09-4529-B5A1-798E685AB0F9} = {5E81AE3B-83EC-48C9-BFFC-844D5C9948EE}
+		{898C29C6-5028-4886-B763-96EE18305F55} = {5E81AE3B-83EC-48C9-BFFC-844D5C9948EE}
+		{19459372-93F4-4437-AC22-AF031D529098} = {3959EDA4-5F7C-42E1-B84B-A2740E20C221}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {48887848-EEDF-4CAA-AC91-A8D8EFFA9037}
